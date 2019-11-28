@@ -4,7 +4,7 @@ plugins {
 }
 
 allprojects {
-  extra["kotlin.version"] = Versions.kotlin
+  extra["kotlin.version"] = embeddedKotlinVersion
   group = "org.springbootcamp.template.gradle"
 
   apply {
@@ -18,6 +18,7 @@ dependencies {
     archives(it)
   }
 }
+
 
 
 

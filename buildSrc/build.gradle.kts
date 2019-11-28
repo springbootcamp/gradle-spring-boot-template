@@ -13,7 +13,12 @@ kotlinDslPluginOptions {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$embeddedKotlinVersion")
+  fun kotlin(module:String) = "org.jetbrains.kotlin:kotlin-$module:$embeddedKotlinVersion"
+
+  implementation(kotlin("gradle-plugin"))
+  implementation(kotlin("allopen"))
+
+  implementation("org.springframework.boot:spring-boot-gradle-plugin:2.2.1.RELEASE")
 }
 
 tasks.withType<KotlinCompile> {

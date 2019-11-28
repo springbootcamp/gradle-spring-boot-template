@@ -1,25 +1,35 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
-    kotlin("jvm")
-
-    application
+  kotlin("jvm")
+  kotlin("plugin.spring")
+  id("org.springframework.boot")
 }
-
 
 dependencies {
-    // Align versions of all Kotlin components
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+  fun springBoot(module : String) = "org.springframework.boot:spring-boot-$module"
 
-    // Use the Kotlin JDK 8 standard library.
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+  implementation(
+    platform(SpringBootPlugin.BOM_COORDINATES)
+  )
+  implementation(
+    platform("org.jetbrains.kotlin:kotlin-bom")
+  )
 
-    // Use the Kotlin test library.
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+  implementation(springBoot("starter-web"))
+  implementation(kotlin("stdlib-jdk8"))
+  implementation(kotlin("reflect"))
 
-    // Use the Kotlin JUnit integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+  testImplementation("org.jetbrains.kotlin:kotlin-test")
+  testImplementation(springBoot("starter-test"))
+  testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+  testImplementation("org.assertj:assertj-core")
 }
 
-application {
-    // Define the main class for the application.
-    mainClassName = "org.springbootcamp.template.gradle.AppKt"
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  kotlinOptions {
+    jvmTarget = Versions.Java.name
+    freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=enable")
+  }
 }
